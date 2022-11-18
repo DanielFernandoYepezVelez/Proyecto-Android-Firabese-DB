@@ -9,7 +9,6 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:gravity="center_vertical"
@@ -25,7 +24,6 @@
         android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:gravity="center_vertical"
@@ -40,7 +38,6 @@
         android:text="" />
 
     <TextView
-        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:gravity="center_vertical"
@@ -55,7 +52,6 @@
         android:text="" />
 
     <TextView
-        android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:gravity="center_vertical"
@@ -98,7 +94,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -108,7 +103,6 @@
             android:text="Adicionar" />
 
         <Button
-            android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -124,7 +118,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button4"
             android:layout_width="91dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -133,7 +126,6 @@
             android:text="Modificar" />
 
         <Button
-            android:id="@+id/button5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -142,7 +134,6 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button6"
         android:layout_width="394dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -150,7 +141,6 @@
         android:text="Cancelar" />
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="106dp"
         app:srcCompat="@drawable/fondo_footer" />

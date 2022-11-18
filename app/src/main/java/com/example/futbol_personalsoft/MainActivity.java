@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     RadioButton jrbProfesional, jrbAscenso, jrbAficionado;
     CheckBox jcbActivo;
 
-    String codigo, nombre, ciudad;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String codigo, nombre, ciudad, categoria, activo;
+    FirebaseFirestore db = FirebaseFirestore .getInstance();
 
 
     @Override
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         jrbAficionado = findViewById(R.id.rbAficionado);
 
         jcbActivo = findViewById(R.id.cbActivo);
+        jrbProfesional.setChecked(true);
     }
 
     public void adicionar(View view) {
@@ -51,27 +53,54 @@ public class MainActivity extends AppCompatActivity {
         if (codigo.isEmpty() || nombre.isEmpty() || ciudad.isEmpty()) {
             Toast.makeText(this, "Todos Los Campos Son Requeridos", Toast.LENGTH_LONG).show();
         } else {
+            /* Que Categoria Es El Equipo */
+            if (jrbProfesional.isChecked()) {
+                categoria = "Profesional";
+            } else if (jrbAscenso.isChecked()) {
+                categoria = "Ascenso";
+            } else {
+                categoria = "Aficionado";
+            }
+
             // Create a new user with a first and last name
-            Map<String, Object> user = new HashMap<>();
-            user.put("first", "Ada");
-            user.put("last", "Lovelace");
-            user.put("born", 1815);
+            Map<String, Object> equipo = new HashMap<>();
+            equipo.put("Codigo", codigo);
+            equipo.put("Nombre", nombre);
+            equipo.put("Ciudad", ciudad);
+            equipo.put("Categoria", categoria);
+
+            System.out.println("codigo aqui");
 
             // Add a new document with a generated ID
-            db.collection("users")
-                    .add(user)
+            db.collection("Campeonato")
+                    .add(equipo)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            //Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            Log.d("", "DocumentSnapshot added with ID: " + documentReference.getId());
+                            Toast.makeText(MainActivity.this, "Documento Adicionado", Toast.LENGTH_LONG).show();
+                            System.out.println("codigo por aqui bien");
+                            limpiarCampos();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            //Log.w(TAG, "Error adding document", e);
+                            Log.w("Error adding document", e);
+                            System.out.println("codigo por aqui error");
+                            Toast.makeText(MainActivity.this, "Documento NO Adicionado", Toast.LENGTH_LONG).show();
                         }
                     });
         }
+    }
+
+    private void limpiarCampos() {
+        jetCodigo.setText("");
+        jetNombre.setText("");
+        jetCiudad.setText("");
+
+        jrbProfesional.setChecked(true);
+        jcbActivo.setChecked(false);
+        jetCodigo.requestFocus();
     }
 }
