@@ -106,6 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="consultar"
             android:backgroundTint="@color/green_1"
             android:text="Consultar" />
 
@@ -122,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
+            android:onClick="modificar"
             android:backgroundTint="@color/yellow_1"
             android:text="Modificar" />
 
