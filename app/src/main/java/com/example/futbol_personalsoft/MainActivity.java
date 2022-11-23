@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     String codigo, nombre, ciudad, categoria, activo;
     FirebaseFirestore db = FirebaseFirestore .getInstance();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,25 +68,21 @@ public class MainActivity extends AppCompatActivity {
             equipo.put("Ciudad", ciudad);
             equipo.put("Categoria", categoria);
 
-            System.out.println("codigo aqui");
-
             // Add a new document with a generated ID
             db.collection("Campeonato")
                     .add(equipo)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            Log.d("", "DocumentSnapshot added with ID: " + documentReference.getId());
+                            //Log.d("", "DocumentSnapshot added with ID: " + documentReference.getId());
                             Toast.makeText(MainActivity.this, "Documento Adicionado", Toast.LENGTH_LONG).show();
-                            System.out.println("codigo por aqui bien");
                             limpiarCampos();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.w("Error adding document", e);
-                            System.out.println("codigo por aqui error");
+                            //Log.w("Error adding document", e);
                             Toast.makeText(MainActivity.this, "Documento NO Adicionado", Toast.LENGTH_LONG).show();
                         }
                     });
