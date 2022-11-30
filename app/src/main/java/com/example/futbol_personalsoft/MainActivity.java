@@ -116,23 +116,28 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     //Log.d(TAG, document.getId() + " => " + document.getData());
-                                    respuesta = true;
-                                    identDoc = document.getId();
-                                    jetNombre.setText(document.getString("Nombre"));
-                                    jetCiudad.setText(document.getString("Ciudad"));
 
-                                    if (document.getString("Categoria").equalsIgnoreCase("Profesional")) {
-                                        jrbProfesional.setChecked(true);
-                                    } else if (document.getString("Categoria").equalsIgnoreCase("Ascenso")) {
-                                        jrbAscenso.setChecked(true);
+                                    if (document.getString("Activo").equalsIgnoreCase("no")) {
+                                        Toast.makeText(MainActivity.this, "El Registro Existe, Pero, Esta Inactivo", Toast.LENGTH_LONG).show();
                                     } else {
-                                        jrbAficionado.setChecked(true);
-                                    }
+                                        respuesta = true;
+                                        identDoc = document.getId();
+                                        jetNombre.setText(document.getString("Nombre"));
+                                        jetCiudad.setText(document.getString("Ciudad"));
 
-                                    if (document.getString("Activo").equalsIgnoreCase("si")) {
-                                        jcbActivo.setChecked(true);
-                                    } else {
-                                        jcbActivo.setChecked(false);
+                                        if (document.getString("Categoria").equalsIgnoreCase("Profesional")) {
+                                            jrbProfesional.setChecked(true);
+                                        } else if (document.getString("Categoria").equalsIgnoreCase("Ascenso")) {
+                                            jrbAscenso.setChecked(true);
+                                        } else {
+                                            jrbAficionado.setChecked(true);
+                                        }
+
+                                        if (document.getString("Activo").equalsIgnoreCase("si")) {
+                                            jcbActivo.setChecked(true);
+                                        } else {
+                                            jcbActivo.setChecked(false);
+                                        }
                                     }
                                 }
                             } else {
@@ -186,6 +191,54 @@ public class MainActivity extends AppCompatActivity {
                     });
 
 
+        } else {
+            Toast.makeText(this, "Debe Primero Consultar", Toast.LENGTH_LONG).show();
+            jetCodigo.requestFocus();
+        }
+    }
+
+    public void anular(View view) {
+        codigo = jetCodigo.getText().toString();
+        nombre = jetNombre.getText().toString();
+        ciudad = jetCiudad.getText().toString();
+
+        if (codigo.isEmpty() || nombre.isEmpty() || ciudad.isEmpty()) {
+            Toast.makeText(this, "Todos Los Campos Son Requeridos", Toast.LENGTH_LONG).show();
+            // Si La Respuesta Fue True, Fue Por Que Primero Lo Consulto
+        } else if(respuesta) {
+            /* Que Categoria Es El Equipo */
+            if (jrbProfesional.isChecked()) {
+                categoria = "Profesional";
+            } else if (jrbAscenso.isChecked()) {
+                categoria = "Ascenso";
+            } else {
+                categoria = "Aficionado";
+            }
+
+            // Create a new user with a first and last name
+            Map<String, Object> equipo = new HashMap<>();
+            equipo.put("Codigo", codigo);
+            equipo.put("Nombre", nombre);
+            equipo.put("Ciudad", ciudad);
+            equipo.put("Categoria", categoria);
+            equipo.put("Activo", "no");
+
+            // Update a new document with a generated ID
+            db.collection("Campeonato").document(identDoc)
+                    .set(equipo)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(MainActivity.this,"Documento ANULADO correctmente...",Toast.LENGTH_SHORT).show();
+                            limpiarCampos();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MainActivity.this,"Error ANULANDO Documento...",Toast.LENGTH_SHORT).show();
+                        }
+                    });
         } else {
             Toast.makeText(this, "Debe Primero Consultar", Toast.LENGTH_LONG).show();
             jetCodigo.requestFocus();
